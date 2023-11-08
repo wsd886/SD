@@ -1,0 +1,55 @@
+#!/bin/sh
+skip=49
+
+tab='	'
+nl='
+'
+IFS=" $tab$nl"
+
+umask=`umask`
+umask 77
+
+gztmpdir=
+trap 'res=$?
+  test -n "$gztmpdir" && rm -fr "$gztmpdir"
+  (exit $res); exit $res
+' 0 1 2 3 5 10 13 15
+
+case $TMPDIR in
+  / | /*/) ;;
+  /*) TMPDIR=$TMPDIR/;;
+  *) TMPDIR=/tmp/;;
+esac
+if type mktemp >/dev/null 2>&1; then
+  gztmpdir=`mktemp -d "${TMPDIR}gztmpXXXXXXXXX"`
+else
+  gztmpdir=${TMPDIR}gztmp$$; mkdir $gztmpdir
+fi || { (exit 127); exit 127; }
+
+gztmp=$gztmpdir/$0
+case $0 in
+-* | */*'
+') mkdir -p "$gztmp" && rm -r "$gztmp";;
+*/*) gztmp=$gztmpdir/`basename "$0"`;;
+esac || { (exit 127); exit 127; }
+
+case `printf 'X\n' | tail -n +1 2>/dev/null` in
+X) tail_n=-n;;
+*) tail_n=;;
+esac
+if tail $tail_n +$skip <"$0" | gzip -cd > "$gztmp"; then
+  umask $umask
+  chmod 700 "$gztmp"
+  (sleep 5; rm -fr "$gztmpdir") 2>/dev/null &
+  "$gztmp" ${1+"$@"}; res=$?
+else
+  printf >&2 '%s\n' "Cannot decompress $0"
+  (exit 127); res=127
+fi; exit $res
+?胐SD_start.sh 蚖遫跿~鱛q鍲焐v劾剢Ra?岲摢蛦&?酃?9灼?襐?寱惮僇V?e[T懚?c)鹎须?个M葳i?js熲{??鐍?7CW$绽挭??A癠緖驇?浕d?桸?渤州Z釋
+\酮V\??瘝乀F5	?x:?衼4?>t迂f粡鲎蓗?磺>㊣牛顫GA悃?蔸
+懿鼟穬絤襷Jv~儍_?鍇Ы賧袉狌#跕v稚J摤茱>容?墀>?h?樵翄:?軂HZG鹝|勊跛(?綸V<敎3半)?聄榋2啔F
+V┓?82]擝s闤ha儑?6陣w?_锉?攴/b?!弻吐e??y糥槓?虺9>3U湠敂掾,靰J1?|骠R>桡V???僥1鰶摮s鵥!菑弾??筌鴏~媠?欞V醈鸎乱涀姣??蟀竴<?蟰疜拑lK<H?)帵5$eR憿健?mA羻D眨誑昔耈磀[?3ri*?拆R篂	
+黆v謆苎橃,哐?嗕?愷bH?M蚫誤愻鴚=x?1w>??|?=qT扔$郾*唹牟膆D籄??j酻雥f儆-Y蔳?!粽oH?7s?U,蘋n?溟?o/gCZH??槅肓G癅)聡T酴}|熿麅S鼼1O?}2雃ェ9圴
++UZ餞b`Gy渎<h縴U?潄@二紌,hmRa%r橨杳熲x_:'9昔<?獕`篓T|装0#秏剜曛"笐Y牀2
+屲飓逫io珲呆核`w覮８?軼Ｆ#?уR~|?￤咈1\a┚!&遃闇杈飪6埊.虳娒q畨?:,?Qv鞾黢z>紘?y庡6?硝?*u脖K>k?懖4篙${?S饠倭稯:忣腮钰藸盞+BO9鰒!祴｝E`u?I藩H騏{?虠轶K\]q骂€p磼@氾 -yG[MC/熤跓?  
